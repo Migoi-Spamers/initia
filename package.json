@@ -4,7 +4,7 @@
   "description": "",
   "main": "faucet_test.js",
   "scripts": {
-    "faucet": "node faucet_test.js"
+    "faucet": "node ./src/faucet/faucet_test.js"
   },
   "keywords": [],
   "author": "",

@@ -66,7 +66,7 @@ const faucet = async (address) => {
 
 
 const main = async () => {
-    const addressList = await readFile('faucet_addresses.txt');
+    const addressList = await readFile('./faucet_addresses.txt');
 
     for (const address of addressList) {
         await faucet(address);
