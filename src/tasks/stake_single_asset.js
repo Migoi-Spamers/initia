@@ -24,7 +24,7 @@ const validatorList = [
     'initvaloper12ygz083ccaxl0y8870yukdg53tyql922pzlvss'
 ];
 
-const stake = async (lcd, wallet) => {
+const stake = async (lcd, wallet, pairArgs, callback) => {
     try {
         const validator = validatorList[getRandomInt(0, validatorList.length - 1)];
 
@@ -36,8 +36,12 @@ const stake = async (lcd, wallet) => {
             '0x42cd8467b1c86e59bf319e5664a09b6b5840bb3fac64f5ce690b5041c530565a',
             'dex_utils',
             'single_asset_provide_stake',
-            undefined,
-            ["2/BsSK85hOxtmuipqn27C7HnhKqbjEpWga9mDPhVjX0=", "jkczvavPfUr8PRTw3UbJv1L7D86eS5lsk54ZW4vIkdk=", "gIQeAAAAAAA=", "AUG8FwAAAAAA", base64_validator] // Stake INIT only
+            [],
+            [
+                ...pairArgs,
+                base64_validator
+            ]
+            // ["2/BsSK85hOxtmuipqn27C7HnhKqbjEpWga9mDPhVjX0=", "jkczvavPfUr8PRTw3UbJv1L7D86eS5lsk54ZW4vIkdk=", "gIQeAAAAAAA=", "AUG8FwAAAAAA", base64_validator] // Stake INIT only
             // ["2/BsSK85hOxtmuipqn27C7HnhKqbjEpWga9mDPhVjX0=","KYJNlS4DVJD651Z97qXxW1BKaPpzYQBjwWCrH6h91gk=","QEIPAAAAAAA=","AZb9CwAAAAAA",base64_validator] // Stake 1 USDC
         );
 
@@ -47,8 +51,15 @@ const stake = async (lcd, wallet) => {
 
         const broadcastResult = await lcd.tx.broadcast(signedTx);
         console.log(broadcastResult);
+
+        if (broadcastResult.raw_log == '') {
+            callback(true);
+        } else {
+            callback(false);
+        }
     } catch (err) {
-        console.log("Stake err");
+        console.log("Stake err", err);
+        callback(false);
     }
 };
 

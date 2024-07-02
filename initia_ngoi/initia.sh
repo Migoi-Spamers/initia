@@ -37,14 +37,14 @@ cat ./wallet_name_addr.txt | head -n 3 | while read wallet_name wallet_addr wall
 
 	########### Task 4 - STAKE INIT to a VALIDATOR ###########
 	# Select validator randomly
-        RANDOM_VAL_NO=$(awk -v min=1 -v max=2 'BEGIN{srand(); print min+rand()*(max-min)}' | awk '{printf "%.0f\n", $0}');
-        SEL_VAL=$(cat ./val_list.txt | head -n $RANDOM_VAL_NO | tail -n 1)
+        # RANDOM_VAL_NO=$(awk -v min=1 -v max=2 'BEGIN{srand(); print min+rand()*(max-min)}' | awk '{printf "%.0f\n", $0}');
+        # SEL_VAL=$(cat ./val_list.txt | head -n $RANDOM_VAL_NO | tail -n 1)
 
-	/usr/local/bin/initiad tx mstaking delegate $SEL_VAL 10000uinit --from $wallet_addr --gas auto --fees 100000uinit -y; # 100000uinit,5000uusdc -y
+	# /usr/local/bin/initiad tx mstaking delegate $SEL_VAL 10000uinit --from $wallet_addr --gas auto --fees 100000uinit -y; # 100000uinit,5000uusdc -y
 	
 	########### Task 6 - Claim staking reward ###########
-	# sleep 30;
-	# /usr/local/bin/initiad tx distribution withdraw-all-rewards --from $wallet_addr -y --gas auto --fees 100000uinit
+	sleep 30;
+	/usr/local/bin/initiad tx distribution withdraw-all-rewards --from $wallet_addr -y --gas auto --fees 100000uinit
 	
 	########### Mint all parts of Jennie NFT ###########
 	# for (( part_no=0; part_no<=5; part_no++ )); do

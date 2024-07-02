@@ -2,7 +2,7 @@ const { MsgExecute } = require('@initia/initia.js');
 const { bcs } = require('@mysten/bcs');
 
 
-const registerDomain = async (lcd, wallet, domainName) => {
+const registerDomain = async (lcd, wallet, domainName, callback) => {
     try {
         const serializedString = bcs.string().serialize(domainName);
         const base64string = serializedString.toBase64();
@@ -21,10 +21,13 @@ const registerDomain = async (lcd, wallet, domainName) => {
         });
 
         const broadcastResult = await lcd.tx.broadcast(signedTx);
-        // console.log(broadcastResult);
-        console.log(broadcastResult, "Mint OK");
+        console.log(broadcastResult);
+        if (broadcastResult.raw_log !== '') {
+            callback();
+        }
     } catch (err) {
         console.log("registerDomain error: ", err);
+        callback();
     }
 };
 

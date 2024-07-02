@@ -36,9 +36,17 @@ function sleep(time = 0) {
     });
 }
 
+function retry(callback) {
+    let retry = true;
+    while (retry) {
+        callback(retry);
+    };
+}
+
 module.exports = {
     readFile,
     getRandomInt,
     shuffle,
-    sleep
+    sleep,
+    retry
 };

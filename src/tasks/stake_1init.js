@@ -1,6 +1,5 @@
 const { MsgDelegate } = require('@initia/initia.js');
-const { bcs } = require('@mysten/bcs');
-const { getRandomInt } = require('../utils');
+const { getRandomInt, sleep } = require('../utils');
 
 const validatorList = [
     'initvaloper1q2al59gylz40jms6emey6ps8leuguhs7kvqhag',
@@ -24,16 +23,14 @@ const validatorList = [
     'initvaloper12ygz083ccaxl0y8870yukdg53tyql922pzlvss'
 ];
 
-const stake = async (lcd, wallet) => {
+const stake_1init = async (lcd, wallet, callback) => {
     try {
         const validator = validatorList[getRandomInt(0, validatorList.length - 1)];
 
-        const serializedString = bcs.string().serialize(validator);
-
         const msg = new MsgDelegate(
             wallet.key.accAddress,
-            '0x42cd8467b1c86e59bf319e5664a09b6b5840bb3fac64f5ce690b5041c530565a',
-            'dex_utils',
+            validator,
+            '1000000uinit',
         );
 
         const signedTx = await wallet.createAndSignTx({
@@ -42,11 +39,18 @@ const stake = async (lcd, wallet) => {
 
         const broadcastResult = await lcd.tx.broadcast(signedTx);
         console.log(broadcastResult);
+
+        if (broadcastResult.raw_log !== '') {
+            callback(false);
+        } else {
+            callback(true);
+        }
     } catch (err) {
-        console.log("Stake err");
+        console.log("Stake 1 init err", err);
+        callback(false);
     }
 };
 
 module.exports = {
-    stake
+    stake_1init
 };
