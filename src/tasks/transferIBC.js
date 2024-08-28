@@ -1,17 +1,16 @@
 const { Coin, MsgTransfer, Height } = require('@initia/initia.js');
+const { getRandomInt } = require('../utils');
 
-async function transferToken(lcd, wallet, callback) {
-
+async function msgTransferToken(lcd, wallet, callback) {
     try {
         const msg = new MsgTransfer(
             'transfer',
-            'channel-0',
-            new Coin('ibc/8E27BA2D5493AF5636760E354E46004562C46AB7EC0CC4C1CA14E9E20E2545B5', '1000000'),
+            'channel-310',
+            new Coin('uinit', `${getRandomInt(2000000, 3500000)}`),
             wallet.key.accAddress,
-            '0x1::cosmos::transfer',
+            wallet.key.accAddress,
             new Height(0, 0),
-            '1729175743696000000',
-            '{"move":{"message":{"module_address":"0x1","module_name":"cosmos","function_name":"transfer","type_args":[],"args":["K2luaXQxOG40amNwcXZmMjI1dXRzMHlsN3NjaHp4N2ZxZTVsd3lsZHBnbTc=","KYJNlS4DVJD651Z97qXxW1BKaPpzYQBjwWCrH6h91gk=","QEIPAAAAAAA=","CHRyYW5zZmVy","CWNoYW5uZWwtMA==","AAAAAAAAAAA=","AAAAAAAAAAA=","QKGPDqky2Bc=","AA=="]}}}'
+            '1731280445116000000'
         );
 
         const signedTx = await wallet.createAndSignTx({
@@ -34,6 +33,6 @@ async function transferToken(lcd, wallet, callback) {
 };
 
 module.exports = {
-    transferToken
+    msgTransferToken
 };
 

@@ -12,17 +12,17 @@ async function withdrawFood(lcd, wallet, callback) {
         const { data } = await checkAddress(wallet.key.accAddress);
         const food = JSON.parse(data.resource.move_resource).data;
 
-        console.log(
-            food,
-        );
+        // console.log(
+        //     food,
+        // );
 
-        if (
-            food.tier2 !== '0' ||
-            food.tier3 !== '0'
-        ) {
-            callback(true);
-            return;
-        }
+        // if (
+        //     food.tier2 !== '0' ||
+        //     food.tier3 !== '0'
+        // ) {
+        //     callback(true);
+        //     return;
+        // }
 
         const msg = new MsgExecute(
             wallet.key.accAddress,
@@ -30,7 +30,7 @@ async function withdrawFood(lcd, wallet, callback) {
             'jennie',
             'draw_food',
             undefined,
-            [foodRate[1]]
+            ["Aw=="]
         );
 
         const signedTx = await wallet.createAndSignTx({

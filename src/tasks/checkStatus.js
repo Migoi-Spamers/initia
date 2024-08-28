@@ -7,6 +7,8 @@ const claimableXp = address => `https://xp-api.initiation-1.initia.xyz/xp/claima
 
 const ranking = address => `https://xp-api.initiation-1.initia.xyz/leaderboard/rankings/${address}`;
 
+let count = 0;
+
 async function checkStatus(address, callback) {
     try {
         const response = await fetch(claimableUrl(address));
@@ -34,12 +36,20 @@ async function checkStatus(address, callback) {
         });
         const total_xp = Number.parseInt(current_xp) + Number.parseInt(claimable_xp);
 
+
+        if (Number.parseInt(rank_data.hp) > 5) {
+            count++;
+        }
+
+        // console.log(count);
+
         console.log(food);
         console.log(
             `current xp: ${current_xp}\n`,
             `claimable xp: ${claimable_xp}\n`,
             `hp: ${rank_data.hp}\n`,
             `rank: ${rank_data.rank}\n`,
+            `frame level: ${rank_data.frame_level}\n`,
             `total xp: ${total_xp}`
         );
 

@@ -1,14 +1,16 @@
-const { MsgExecute } = require('@initia/initia.js');
+const { bcs, MsgExecute } = require('@initia/initia.js');
 
-async function tucanaSwap(lcd, wallet, callback) {
+
+async function miniswapProvide(lcd, wallet, callback) {
     try {
+
         const msg = new MsgExecute(
             wallet.key.accAddress,
-            '0x8609f642a8ab1c13d661c14d733cab227bba15635a730af2057051b3f2ada3f6',
-            'router',
-            'swap',
-            [],
-            ["FrbuJROsvX9uKlyA1LMdS9QsSwfe5LOLvx2xOzAwk+E=","AQ==","AQ==","oIYBAAAAAAA=","ZIYBAAAAAAA=","UDsBAAEAAAAAAAAAAAAAAA=="]
+            '0x1',
+            'dex',
+            'single_asset_provide_liquidity_script',
+            undefined,
+            ["s/TSKnNzlI0a/OECOi6HVCXMwYLYI7cU4Zp6iX/bF9U=", "7Xoi5MNRmKMo0nGTH9xzQjM+LrGVP+b8DDcDi2RUG68=", "IE4AAAAAAAA=", "AdkoAAAAAAAA"]
         );
 
         const signedTx = await wallet.createAndSignTx({
@@ -31,6 +33,6 @@ async function tucanaSwap(lcd, wallet, callback) {
 };
 
 module.exports = {
-    tucanaSwap
+    miniswapProvide
 };
 

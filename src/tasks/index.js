@@ -1,6 +1,6 @@
 const { LCDClient, MnemonicKey, Wallet } = require("@initia/initia.js");
 const randomstring = require('randomstring');
-const { readFile, getRandomInt, sleep, retry } = require("../utils");
+const { readFile, getRandomInt, sleep, retry, shuffle } = require("../utils");
 const { registerDomain } = require('./register_domain');
 const { setPrimaryDomain } = require('./set_domain_primary');
 const { mintNFTPart } = require('./mint_nft_part');
@@ -18,11 +18,16 @@ const { tucanaSwap } = require("./tucana_swap");
 const { tucanaLp } = require("./tucana_lp");
 const { bridge } = require("./bridge");
 const { sendTokenToL2 } = require("./sendTokenToL2");
-const { transferToken } = require("./transfer");
+const { msgTransferToken } = require("./transferIBC");
 const { checkStatus } = require("./checkStatus");
 const { civitaRoll } = require("./civita_roll");
 const { tucanaPerps } = require("./tucana_perps");
 const { civitiaClaimReward } = require("./claimReward_civitia");
+const { miniSwapRouter } = require("./miniswap_router");
+const { opTransfer } = require("./opTransfer");
+const { claimSticker } = require("./claim_sticker");
+const { miniswapProvide } = require("./miniswap_provide");
+const { vote } = require("./vote");
 
 let error_wallets_3 = [];
 
@@ -42,7 +47,7 @@ const ethPairs = [
 ]
 
 // http://65.108.205.51:1317/
-const runTasks = async (lcd, wallet,index, callback) => {
+const runTasks = async (lcd, wallet, index, callback) => {
     console.log(wallet.key.accAddress);
 
     // register domain
@@ -144,6 +149,7 @@ const runTasks = async (lcd, wallet,index, callback) => {
     //         callback();
     //         return;
     //     }
+
     //     error_wallets_3.push(wallet.key.accAddress);
     // });
 
@@ -158,14 +164,14 @@ const runTasks = async (lcd, wallet,index, callback) => {
     // });
 
     // tucana swap
-    await tucanaSwap(lcd, wallet, (isSuccess) => {
-        if (isSuccess) {
-            callback();
-            return;
-        }
+    // await tucanaSwap(lcd, wallet, (isSuccess) => {
+    //     if (isSuccess) {
+    //         callback();
+    //         return;
+    //     }
 
-        error_wallets_3.push(wallet.key.accAddress);
-    });
+    //     error_wallets_3.push(wallet.key.accAddress);
+    // });
 
     // tucana lp
     // await tucanaLp(lcd, wallet, (isSuccess) => {
@@ -224,8 +230,58 @@ const runTasks = async (lcd, wallet,index, callback) => {
     //     error_wallets_3.push(wallet.key.accAddress);
     // });
 
+    // // miniswap router
+    // await miniSwapRouter(lcd, wallet, (isSuccess) => {
+    //     if (isSuccess) {
+    //         callback();
+    //         return;
+    //     }
+
+    //     error_wallets_3.push(wallet.key.accAddress);
+    // });
+
+    // // miniswap provide
+    // await miniswapProvide(lcd, wallet, (isSuccess) => {
+    //     if (isSuccess) {
+    //         callback();
+    //         return;
+    //     }
+
+    //     error_wallets_3.push(wallet.key.accAddress);
+    // });
+
+    // opTransfer
+    // await opTransfer(lcd, wallet, (isSuccess) => {
+    //     if (isSuccess) {
+    //         callback();
+    //         return;
+    //     }
+
+    //     error_wallets_3.push(wallet.key.accAddress);
+    // });
+
     // transfer
-    // await transferToken(lcd, wallet, (isSuccess) => {
+    // await msgTransferToken(lcd, wallet, (isSuccess) => {
+    //     if (isSuccess) {
+    //         callback();
+    //         return;
+    //     }
+
+    //     error_wallets_3.push(wallet.key.accAddress);
+    // });
+
+    // claim sticker
+    // await claimSticker(lcd, wallet, (isSuccess) => {
+    //     if (isSuccess) {
+    //         callback();
+    //         return;
+    //     }
+
+    //     error_wallets_3.push(wallet.key.accAddress);
+    // });
+
+    // vote
+    // await vote(lcd, wallet, (isSuccess) => {
     //     if (isSuccess) {
     //         callback();
     //         return;
@@ -235,9 +291,9 @@ const runTasks = async (lcd, wallet,index, callback) => {
     // });
 
     // status
-    // await checkStatus(wallet.key.accAddress, () => {
-    //     callback();
-    // });
+    await checkStatus(wallet.key.accAddress, () => {
+        callback();
+    });
 };
 
 const main = async () => {
@@ -280,7 +336,7 @@ const main = async () => {
 
     let selectedWallets = wallets;
     let triedTimes = 0;
-    
+
     do {
         let index = 0;
         console.log(selectedWallets.map(wallet => wallet.key.accAddress));

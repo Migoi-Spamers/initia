@@ -1,26 +1,12 @@
-const { MsgInitiateTokenDeposit, Coin } = require('@initia/initia.js');
-const { getRandomInt } = require('../utils');
+const { Coin, MsgInitiateTokenWithdrawal } = require('@initia/initia.js');
 
-const bridge_ids = [
-    8, // blackwing
-    6, // init AI
-    14, // tucan
-    2, // miniwasm
-    17, // noon
-    1, // minimove
-    24, // civita
-    98, // milkyway
-]
-
-async function sendTokenToL2(lcd, wallet, callback) {
-    const bridge_id = bridge_ids[7];
+async function opTransfer(lcd, wallet, callback) {
 
     try {
-        const msg = new MsgInitiateTokenDeposit(
+        const msg = new MsgInitiateTokenWithdrawal(
             wallet.key.accAddress,
-            bridge_id,
             wallet.key.accAddress,
-            new Coin('uinit', `${getRandomInt(1500000, 3000000)}`)
+            new Coin('l2/afaa3f4e1717c75712f8e8073e41f051a4e516cd25daa82d948c4729388edefd', '1000000'),
         );
 
         const signedTx = await wallet.createAndSignTx({
@@ -43,6 +29,6 @@ async function sendTokenToL2(lcd, wallet, callback) {
 };
 
 module.exports = {
-    sendTokenToL2
+    opTransfer
 };
 

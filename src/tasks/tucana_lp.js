@@ -3,8 +3,7 @@ const { getRandomInt } = require('../utils');
 
 
 const LPs = [
-    ["FrbuJROsvX9uKlyA1LMdS9QsSwfe5LOLvx2xOzAwk+E=", "9v///w==", "vgAAAA==", "IokBAAAAAAA=", "oIYBAAAAAAA=", "AA=="]
-
+    ["FrbuJROsvX9uKlyA1LMdS9QsSwfe5LOLvx2xOzAwk+E=","tP///w==","fAAAAA==","oY8BAAAAAAA=","oIYBAAAAAAA=","AA=="]
 ];
 
 async function tucanaLp(lcd, wallet, callback) {
